@@ -41,12 +41,14 @@ def get_solved(problems_url, cookies):
     problems_options['page'] += 1
   return solved
 
-def mkdir(dirname, relpath=None):
+# mkdir wrapper to not crash when directory already exists
+def mkdir(dirname):
   if not os.path.exists(dirname):
     os.mkdir(dirname)
     return True
   return False
 
+# Downloads all accepted submissions for a given problem.
 def download(base_url, user_url, sub_url, problem_name, cookies):
   problem_url = user_url + f'/{problem_name}'
   response = requests.get(problem_url, cookies=cookies)
@@ -66,12 +68,14 @@ def download(base_url, user_url, sub_url, problem_name, cookies):
     with open(os.path.join(i, download_url.split('/')[-1]), 'wb') as f:
       f.write(requests.get(base_url + download_url, cookies=cookies, allow_redirects=True).content)
   print(f'Finished with {problem_name}')
+
+# Main logic
 if __name__ == '__main__':
   # Open config file
   config = configparser.ConfigParser()
   config.read('.kattisrc')
 
-  # Login to kattis using post request
+  # Login to kattis using credentials from config file
   username = config['user']['username']
   token = config['user']['token']
   login_url = config['kattis']['loginurl']
@@ -86,6 +90,8 @@ if __name__ == '__main__':
   submissions_url = f'{base_url}/users/{username}/submissions'
   single_sub_url = f'{base_url}/submissions'
   
+  # Download all files in directories for each problem with a subdirectory for
+  # each submission based on the submission ID.
   mkdir('solved')
   os.chdir(os.path.join('solved'))
   for s in solved:
