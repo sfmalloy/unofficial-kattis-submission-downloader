@@ -2,19 +2,12 @@
   Filename:    download.py
   Author:      Sean Malloy
   Description: Submission downloader for solved problems on open.kattis.com
-
-  TODO:
-  - Authenticator
-  - lxml and BeautifulSoup parsing/downloading
-  - Might need another module for actually downloading the zip files with the
-    source code...
 '''
 
 import configparser
 import requests
 import bs4
 import os
-import zipfile
 
 def login(username, token, url):
   login_args = {'user': config['user']['username'], 'token': config['user']['token'], 'script': 'true'}
