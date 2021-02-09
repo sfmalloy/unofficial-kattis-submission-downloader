@@ -94,7 +94,26 @@ if __name__ == '__main__':
   # each submission based on the submission ID.
   mkdir('solved')
   os.chdir(os.path.join('solved'))
-  for s in solved:
+  
+  print('''Enter problem IDs of problems you want to solve. Type "all" to
+download every problem you\'ve solved. Press enter on blank line when finished.''')
+  todo = []
+  count = 0
+  line = '0'
+  while line.strip() not in {'all', ''}:
+    line = input(f'ID {count}: ')
+    todo.append(line)
+    count += 1
+  todo.pop()
+
+  loop = solved
+  if todo[-1] != ['all']:
+    loop = todo
+  valid = set(solved)
+  for s in loop:
+    if s not in valid:
+      print(f'Unknown problem ID {s}')
+      continue
     if mkdir(s):
       print(f'"{s}" directory created')
     else:
