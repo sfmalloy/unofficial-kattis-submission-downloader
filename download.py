@@ -100,14 +100,18 @@ download every problem you\'ve solved. Press enter on blank line when finished.'
   todo = []
   count = 0
   line = '0'
+  get_all = False
   while line.strip() not in {'all', ''}:
     line = input(f'ID {count}: ')
+    if line == 'all':
+      get_all = True
     todo.append(line)
     count += 1
+  
   todo.pop()
 
   loop = solved
-  if todo[-1] != ['all']:
+  if not get_all:
     loop = todo
   valid = set(solved)
   for s in loop:
